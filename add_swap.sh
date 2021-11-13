@@ -9,7 +9,7 @@ export virtual_path="/dev/block/loop7"
 if [ ! -f "$swap_path" ]
 then
         echo "Creating swap file..."
-	dd if=/dev/zero of=$swap_path bs=1m count=1143
+	dd if=/dev/zero of=$swap_path bs=1048576 count=1143
 fi
 if [[ `free -m | grep Swap | tr -s ' ' | cut -d ' ' -f 2` -lt 2000 ]]
 then
