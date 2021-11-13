@@ -13,7 +13,7 @@ then
 fi
 if [[ `free -m | grep Swap | tr -s ' ' | cut -d ' ' -f 2` -lt 2000 ]]
 then
-	losetup -d $virtual_path && losetup $virtual_path $swap_path && busybox mkswap $virtual_path && busybox swapon $virtual_path
+	losetup -d $virtual_path & losetup $virtual_path $swap_path && busybox mkswap $virtual_path && busybox swapon $virtual_path
 	echo "Swap mounted successfully!"
 else
 	echo "Swap is mounted!"
