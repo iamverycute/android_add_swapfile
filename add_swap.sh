@@ -4,17 +4,10 @@ then
 	echo "Please run as root!" 
 	exit 0
 fi
-export swap_path="/sdcard/swapfile"
-export virtual_path="/dev/block/loop7"
-if [ ! -f "$swap_path" ]
-then
-        echo "Creating swap file..."
-	dd if=/dev/zero of=$swap_path bs=1048576 count=1143
-fi
-if [[ `free -m | grep Swap | tr -s ' ' | cut -d ' ' -f 2` -lt 2000 ]]
-then
-	losetup -d $virtual_path & losetup $virtual_path $swap_path && busybox mkswap $virtual_path && busybox swapon $virtual_path
-	echo "Swap mounted successfully!"
-else
-	echo "Swap is mounted!"
+v_part=$(find /dev/block | grep -E "loop" | head -n1);
+swapfile=/sdcard/swapfile;
+if [[ ! -f $swapfile ]] || [[ $(($(du $swapfile | tr -cd '[:digit:]') >> 10)) -lt 2048 ]];
+	then busybox dd if=/dev/zero of=$swapfile bs=4M count=512;
+elif [[ $(free -m | grep -i "swap" | tr -s ' ' | cut -d ' ' -f2) -lt 2048 ]];
+	then losetup "$v_part" "$swapfile" && mkswap "$v_part" && swapon "$v_part";
 fi
