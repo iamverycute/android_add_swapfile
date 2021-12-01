@@ -1,5 +1,5 @@
 #!/system/bin/sh
-if [ `whoami` != "root" ]
+if [ $(whoami) != "root" ]
 then
 	echo "Please run as root!" 
 	exit 0
